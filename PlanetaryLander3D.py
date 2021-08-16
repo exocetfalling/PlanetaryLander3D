@@ -44,14 +44,12 @@ l_alt = 0
 
 l_pitch_rad = 0
 l_roll_rad = 0
-
-l_alphl_rad = 0
-l_betl_rad = 0
+l_yaw_rad = 0
 
 l_thrust_force = 0
 
 # Axes are defined as:
-# For aircraft:
+# For lander:
 # X: left -ve, right +ve
 # Y: aft -ve, forward +ve
 # Z: down -ve, up +ve
@@ -74,17 +72,16 @@ w_z_pos = 0
 w_vec_pos = [0, 0, 0]
 
 # Masses in kg
-c_mass_lander = 1000
+c_mass_dry_lander = 1000
+c_mass_wet_lander = 2000
 
 # Lengths in m
-c_length_lander = 0
+c_radius_lander = 5
 
 # MOIs in kg m^2
-# Using formula:
-# MOI = 1/12 * mass * (length)^2
-c_moi_pitch = 8333
-c_moi_roll = 33333
-c_moi_yaw = 8333
+l_moi_x = 0
+l_moi_y = 0
+l_moi_z = 0
 
 l_accel_x_grav = 0
 l_accel_y_grav = 0
@@ -108,16 +105,19 @@ def Calc_Velocity_World(axis, total_vel, angle_azimuthal, angle_polar):
 def Calc_Velocity_Total_Magnitude(vel_x, vel_y, vel_z):
     return math.sqrt(math.sqrt((pow(vel_x, 2) + pow(vel_y, 2))) + pow(vel_z, 2))
 
-def Calc_Force_Angular_Acc(axis, force_magnitude, distance_from_pivot):
-    if (axis == 'x'):
-        return force_magnitude * distance_from_pivot / c_moi_pitch
-    if (axis == 'y'):
-        return force_magnitude * distance_from_pivot / c_moi_roll
-    if (axis == 'z'):
-        return force_magnitude * distance_from_pivot / c_moi_yaw
+def Calc_Force_Angular_Acc(moi, force_magnitude, distance_from_pivot):
+    return force_magnitude * distance_from_pivot / moi
 
 def Calc_Angular_Vel():
     pass
+
+def Calc_MOI(axis, mass, radius):
+    if (axis =='x'):
+        return 2/5 * mass * math.pow(radius, 2)
+    if (axis =='y'):
+        return 2/5 * mass * math.pow(radius, 2)
+    if (axis =='z'):
+        return 2/5 * mass * math.pow(radius, 2)
 
 def Calc_Force_Acc(force_magnitude, mass_kg):
     return force_magnitude / mass_kg
@@ -171,7 +171,7 @@ while True:
         '\nTHETA: ' + str(round(l_thetl_deg, 2)) + \
         '\nPHI: ' + str(round(l_phi_deg, 2)) + \
         '\nPITCH: ' + str(round(Convert_Angle_Rad_To_Deg(l_pitch_rad), 2)) + \
-        '\nALPHA: ' + str(round(Convert_Angle_Rad_To_Deg(l_alphl_rad), 2))
+        '\nROLL: ' + str(round(Convert_Angle_Rad_To_Deg(l_roll_rad), 2))
     l_phi_deg = (l_phi_deg + 360) % 360
     l_thetl_deg = (l_thetl_deg + 360) % 360
 
