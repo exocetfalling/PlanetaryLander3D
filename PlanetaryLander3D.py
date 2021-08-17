@@ -23,10 +23,10 @@ l_accel_y = 0
 l_accel_z = 0
 
 l_x_velocity = 0
-l_y_velocity = 50
+l_y_velocity = 0
 l_z_velocity = 0
 
-l_total_velocity = 50
+l_total_velocity = 0
 
 l_angular_accel_x = 0
 l_angular_accel_y = 0
